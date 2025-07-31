@@ -16,7 +16,7 @@ export class RefreshTokenEntity extends BaseEntity {
   id!: string
 
   @Column({ length: 500 })
-  value!: string
+  value!: string 
 
   @Column({ comment: '令牌过期时间' })
   expired_at!: Date
