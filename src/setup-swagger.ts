@@ -52,7 +52,7 @@ export function setupSwagger(
   })
 
   return () => {
-  // started log
+    // started log
     const logger = new Logger('SwaggerModule')
     logger.log(`Swagger UI: ${swaggerPath}`)
     logger.log(`Swagger JSON: ${swaggerPath}/json`)
