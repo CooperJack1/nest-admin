@@ -1,13 +1,17 @@
-/* import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query } from '@nestjs/common'
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+} from '@nestjs/common'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
-import { IdParam } from '~/common/decorators/id-param.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
+import { definePermission, Perm } from '~/modules/auth/decorators/permission.decorator'
 
-import { definePermission, Perm } from '../../auth/decorators/permission.decorator'
-
-import { UserDto, UserQueryDto, UserUpdateDto } from './dto/user.dto'
+import { CityDto, CityQueryDto } from './city.dto'
 import { CityEntity } from './city.entity'
 import { CityService } from './city.service'
 
@@ -21,50 +25,24 @@ export const permissions = definePermission('evaluation:city', {
 
 @ApiTags('Evaluation - 城市模块')
 @ApiSecurityAuth()
-@Controller('citys')
+@Controller('city')
 export class CityController {
   constructor(
     private cityService: CityService,
   ) {}
 
   @Get()
-  @ApiOperation({ summary: '获取用户列表' })
-  @ApiResult({ type: [UserEntity], isPage: true })
+  @ApiOperation({ summary: '获取城市列表' })
+  @ApiResult({ type: [CityEntity], isPage: true })
   @Perm(permissions.LIST)
-  async list(@Query() dto: UserQueryDto) {
-    return this.userService.list(dto)
-  }
-
-  @Get(':id')
-  @ApiOperation({ summary: '查询用户' })
-  @Perm(permissions.READ)
-  async read(@IdParam() id: number) {
-    return this.userService.info(id)
+  async list(@Query() dto: CityQueryDto) {
+    return this.cityService.list(dto)
   }
 
   @Post()
-  @ApiOperation({ summary: '新增用户' })
+  @ApiOperation({ summary: '新增城市' })
   @Perm(permissions.CREATE)
-  async create(@Body() dto: UserDto): Promise<void> {
-    await this.userService.create(dto)
+  async create(@Body() dto: CityDto): Promise<void> {
+    await this.cityService.create(dto)
   }
-
-  @Put(':id')
-  @ApiOperation({ summary: '更新用户' })
-  @Perm(permissions.UPDATE)
-  async update(@IdParam() id: number, @Body() dto: UserUpdateDto): Promise<void> {
-    await this.userService.update(id, dto)
-    await this.menuService.refreshPerms(id)
-  }
-
-  @Delete(':id')
-  @ApiOperation({ summary: '删除用户' })
-  @ApiParam({ name: 'id', type: String, schema: { oneOf: [{ type: 'string' }, { type: 'number' }] } })
-  @Perm(permissions.DELETE)
-  async delete(@Param('id', new ParseArrayPipe({ items: Number, separator: ',' })) ids: number[]): Promise<void> {
-    await this.userService.delete(ids)
-    await this.userService.multiForbidden(ids)
-  }
-
 }
- */
